@@ -1,10 +1,12 @@
-import { Arg, ID, Query, Resolver } from "type-graphql";
+import { Arg, ID, Query, Resolver, UseMiddleware } from "type-graphql";
+import { IsAuth } from "../middlewares/auth.middlewares";
 import { UserModel } from "../models/user.model";
 import { UserService } from "../services/user.services";
 
 @Resolver(() => UserModel)
+@UseMiddleware(IsAuth)
 export class UserResolver {
-    constructor(private readonly userService: UserService) { }
+    private userService = new UserService()
 
     @Query(() => UserModel)
     async getUser(
