@@ -1,27 +1,23 @@
-# FullStack-Financy_GraphQL
+# ROCKETSEAT - PROJETO III
+## FullStack-Financy_GraphQL
 
-# 📌 Funcionalidades do Projeto
-
+### Funcionalidades do Projeto
 Este projeto implementa um sistema completo de autenticação, gerenciamento de transações e categorias, garantindo que cada usuário tenha acesso apenas aos seus próprios dados.
 
-## 🔐 Autenticação de Usuário
-
+### Autenticação de Usuário
 - [x] O usuário pode criar uma conta  
 - [x] O usuário pode realizar login  
 
-## 👤 Controle de Acesso
-
+### Controle de Acesso
 - [x] O usuário pode visualizar e gerenciar apenas as transações e categorias criadas por ele  
 
-## 💰 Transações
-
+### Transações
 - [x] Criar uma transação  
 - [x] Editar uma transação  
 - [x] Deletar uma transação  
 - [x] Listar todas as transações do usuário  
 
-## 🏷️ Categorias
-
+### Categorias
 - [x] Criar uma categoria  
 - [x] Editar uma categoria  
 - [x] Deletar uma categoria  
