@@ -1,5 +1,4 @@
-# ROCKETSEAT - PROJETO III
-## FullStack-Financy_GraphQL
+# ROCKETSEAT - FullStack-Financy_GraphQL
 
 ### Funcionalidades do Projeto
 Este projeto implementa um sistema completo de autenticação, gerenciamento de transações e categorias, garantindo que cada usuário tenha acesso apenas aos seus próprios dados.
