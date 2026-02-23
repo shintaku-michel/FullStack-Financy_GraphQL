@@ -23,5 +23,4 @@ Nesse projeto back-end, será desenvolvido uma API para gerenciar a organizaçã
 - [x] Deve ser possível listar todas as categorias do usuário
 
 ### Regras de Negócio
-- [x] É obrigatória a criação de uma aplicação React usando GraphQL para consultas na API e Vite como bundler;
-- [x] Siga o mais fielmente possível o layout do Figma;
+- [x] É obrigatória o uso de TypeScript, GraphQL, Prisma e SQLite.
