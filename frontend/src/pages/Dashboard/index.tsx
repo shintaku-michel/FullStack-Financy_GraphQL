@@ -132,7 +132,7 @@ export function Dashboard() {
               {transactions.map((t) => {
                 const Icon = t.icon;
                 return (
-                  <div key={t.id} className="flex items-center gap-4 px-6 py-4">
+                  <div key={t.id} className="flex items-center gap-4 px-6 py-6 hover:bg-gray-50 transition-colors border-b border-gray-100">
                     <div className={`h-9 w-9 rounded-full ${t.iconBg} flex items-center justify-center flex-shrink-0`}>
                       <Icon size={16} className={t.iconColor} />
                     </div>
@@ -157,7 +157,7 @@ export function Dashboard() {
               })}
             </div>
 
-            <div className="border-t border-gray-100 px-6 py-4">
+            <div className="px-6 py-4">
               <button className="flex items-center gap-1 text-sm text-[#1F6F43] hover:text-[#1F6F43] mx-auto font-normal">
                 <Plus size={14} /> Nova transação
               </button>
@@ -165,7 +165,7 @@ export function Dashboard() {
           </div>
 
           {/* Categorias — 1 coluna */}
-          <div className="rounded-xl bg-white shadow-sm">
+          <div className="rounded-xl bg-white shadow-sm self-start">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
               <span className="text-xs font-normal text-gray-500 uppercase tracking-wide">
                 Categorias
@@ -177,7 +177,7 @@ export function Dashboard() {
 
             <div className="divide-y divide-gray-50">
               {categories.map((cat) => (
-                <div key={cat.name} className="flex items-center px-6 py-4">
+                <div key={cat.name} className="flex items-center px-6 py-[16px] hover:bg-gray-50 transition-colors">
                   <span className={`text-xs font-medium px-3 py-1 rounded-full ${cat.color}`}>
                     {cat.name}
                   </span>

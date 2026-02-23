@@ -8,7 +8,7 @@ import {
   Search,
 } from "lucide-react";
 import { useState } from "react";
-import { CreateCategoryDialog } from "../Categories/components/CreateCategoryDialog";
+import { CreateTransactionDialog } from "./components/CreateTransactionDialog";
 import { TransactionTable } from "./components/TransactionTable";
 
 const selectClass =
@@ -31,8 +31,8 @@ export function Transactions() {
           </div>
           <Button type="submit" className="text-xs" onClick={() => setOpenDialog(true)}>
             <Plus className="mr-2 h-4 w-4" />
-            Nova Categoria
-          </Button>
+            Nova Transação
+          </Button> 
         </div>
 
         <div className="grid grid-cols-1 gap-6">
@@ -123,7 +123,7 @@ export function Transactions() {
         />
       </div>
 
-      <CreateCategoryDialog open={openDialog} onOpenChange={setOpenDialog} />
+      <CreateTransactionDialog open={openDialog} onOpenChange={setOpenDialog} />
     </Page>
   );
 }

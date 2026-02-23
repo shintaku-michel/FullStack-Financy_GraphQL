@@ -1,182 +1,186 @@
 import { Page } from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { DELETE_CATEGORY } from "@/lib/graphql/mutations/Category";
+import { LIST_CATEGORIES } from "@/lib/graphql/queries/Categories";
+import { useMutation, useQuery } from "@apollo/client/react";
 import {
   ArrowUpDown,
+  BaggageClaim,
+  BookOpen,
   BriefcaseBusiness,
   Car,
+  Dumbbell,
+  Gift,
   HeartPulse,
+  Home,
+  Mailbox,
+  PawPrint,
   PiggyBank,
   Plus,
+  ReceiptText,
   ShoppingCart,
   Tag,
   Ticket,
+  ToolCase,
   Utensils,
+  type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
+import { CategoryIndicator } from "./components/CategoryIndicator";
 import { CategoryCard } from "./components/CategoryCard";
 import { CreateCategoryDialog } from "./components/CreateCategoryDialog";
 
-const mockCategories = [
-  {
-    id: "1",
-    icon: Utensils,
-    iconBgColor: "bg-blue-100",
-    iconColor: "text-blue-500",
-    name: "Alimentação",
-    description: "Restaurantes, delivery e refeições",
-    badgeBgColor: "bg-blue-100",
-    badgeTextColor: "text-blue-600",
-    itemCount: 12,
-  },
-  {
-    id: "2",
-    icon: Ticket,
-    iconBgColor: "bg-pink-100",
-    iconColor: "text-pink-500",
-    name: "Entretenimento",
-    description: "Cinema, jogos e lazer",
-    badgeBgColor: "bg-pink-100",
-    badgeTextColor: "text-pink-600",
-    itemCount: 2,
-  },
-  {
-    id: "3",
-    icon: PiggyBank,
-    iconBgColor: "bg-green-100",
-    iconColor: "text-green-500",
-    name: "Investimento",
-    description: "Aplicações e retornos financeiros",
-    badgeBgColor: "bg-green-100",
-    badgeTextColor: "text-green-600",
-    itemCount: 1,
-  },
-  {
-    id: "4",
-    icon: ShoppingCart,
-    iconBgColor: "bg-orange-100",
-    iconColor: "text-orange-500",
-    name: "Mercado",
-    description: "Compras de supermercado e mantimentos",
-    badgeBgColor: "bg-orange-100",
-    badgeTextColor: "text-orange-600",
-    itemCount: 3,
-  },
-  {
-    id: "5",
-    icon: BriefcaseBusiness,
-    iconBgColor: "bg-emerald-100",
-    iconColor: "text-emerald-500",
-    name: "Salário",
-    description: "Renda mensal e bonificações",
-    badgeBgColor: "bg-emerald-100",
-    badgeTextColor: "text-emerald-600",
-    itemCount: 3,
-  },
-  {
-    id: "6",
-    icon: HeartPulse,
-    iconBgColor: "bg-red-100",
-    iconColor: "text-red-500",
-    name: "Saúde",
-    description: "Medicamentos, consultas e exames",
-    badgeBgColor: "bg-red-100",
-    badgeTextColor: "text-red-600",
-    itemCount: 0,
-  },
-  {
-    id: "7",
-    icon: Car,
-    iconBgColor: "bg-purple-100",
-    iconColor: "text-purple-500",
-    name: "Transporte",
-    description: "Gasolina, transporte público e viagens",
-    badgeBgColor: "bg-purple-100",
-    badgeTextColor: "text-purple-600",
-    itemCount: 8,
-  },
-  {
-    id: "8",
-    icon: Tag,
-    iconBgColor: "bg-amber-100",
-    iconColor: "text-amber-500",
-    name: "Utilidades",
-    description: "Energia, água, internet e telefone",
-    badgeBgColor: "bg-amber-100",
-    badgeTextColor: "text-amber-600",
-    itemCount: 7,
-  },
-];
+const ICON_MAP: Record<string, LucideIcon> = {
+  briefcaseBusiness: BriefcaseBusiness,
+  car: Car,
+  heartpulse: HeartPulse,
+  piggybank: PiggyBank,
+  cart: ShoppingCart,
+  ticket: Ticket,
+  toolcase: ToolCase,
+  utensils: Utensils,
+  pawprint: PawPrint,
+  home: Home,
+  gift: Gift,
+  dumbbell: Dumbbell,
+  book: BookOpen,
+  baggageclaim: BaggageClaim,
+  mailbox: Mailbox,
+  receipttext: ReceiptText,
+};
+
+const COLOR_MAP: Record<string, { iconBg: string; iconColor: string; badgeBg: string; badgeText: string }> = {
+  green:  { iconBg: "bg-green-100",   iconColor: "text-green-500",   badgeBg: "bg-green-100",   badgeText: "text-green-600"  },
+  blue:   { iconBg: "bg-blue-100",    iconColor: "text-blue-500",    badgeBg: "bg-blue-100",    badgeText: "text-blue-600"   },
+  purple: { iconBg: "bg-purple-100",  iconColor: "text-purple-500",  badgeBg: "bg-purple-100",  badgeText: "text-purple-600" },
+  pink:   { iconBg: "bg-pink-100",    iconColor: "text-pink-500",    badgeBg: "bg-pink-100",    badgeText: "text-pink-600"   },
+  red:    { iconBg: "bg-red-100",     iconColor: "text-red-500",     badgeBg: "bg-red-100",     badgeText: "text-red-600"    },
+  orange: { iconBg: "bg-orange-100",  iconColor: "text-orange-500",  badgeBg: "bg-orange-100",  badgeText: "text-orange-600" },
+  amber:  { iconBg: "bg-amber-100",   iconColor: "text-amber-500",   badgeBg: "bg-amber-100",   badgeText: "text-amber-600"  },
+};
+
+const DEFAULT_ICON = Tag;
+const DEFAULT_COLOR = COLOR_MAP.blue;
+
+interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+  transactionCount?: number;
+}
 
 export function Categories() {
   const [openDialog, setOpenDialog] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<Category | undefined>(undefined);
+
+  const { data, loading, error, refetch } = useQuery<{ listCategories: Category[] }>(LIST_CATEGORIES);
+
+  if (error) console.error("[ListCategories]", error.message);
+
+  const categories = data?.listCategories ?? [];
+
+  const totalTransactions = categories.reduce((sum, cat) => sum + (cat.transactionCount ?? 0), 0);
+  const mostUsed = categories.reduce<Category | undefined>(
+    (top, cat) => ((cat.transactionCount ?? 0) > (top?.transactionCount ?? 0) ? cat : top),
+    undefined
+  );
+
+  const [deleteCategory] = useMutation(DELETE_CATEGORY, {
+    onCompleted() {
+      toast.success("Categoria excluída com sucesso!");
+      refetch();
+    },
+    onError(err) {
+      toast.error(err.message);
+    },
+  });
+
+  function handleEdit(category: Category) {
+    setEditingCategory(category);
+    setOpenDialog(true);
+  }
+
+  function handleDelete(id: string) {
+    deleteCategory({ variables: { id } });
+  }
+
+  function handleDialogClose(open: boolean) {
+    setOpenDialog(open);
+    if (!open) setEditingCategory(undefined);
+  }
 
   return (
     <Page>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div>  
+          <div>
             <Label className="text-xl text-semibold">Categorias</Label>
             <p className="text-sm text-gray-500">Organize suas transações por categorias</p>
           </div>
-          <Button type="submit" className="text-xs" onClick={() => setOpenDialog(true)}>
+          <Button type="button" className="text-xs" onClick={() => setOpenDialog(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Nova Categoria
           </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <div className="flex items-start gap-4">
-              <Tag size={22} className="text-gray-500 mt-1" />
-              <div className="flex flex-col items-start">
-                <p className="text-xl font-semibold text-gray-800">8</p>
-                <p className="text-xs text-gray-500 uppercase">Total de categorias</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <div className="flex items-start gap-4">
-              <ArrowUpDown size={22} className="text-[#9333EA] mt-1" />
-              <div className="flex flex-col items-start">
-                <p className="text-xl font-semibold text-gray-800">8</p>
-                <p className="text-xs text-gray-500 uppercase">Total de transações</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <div className="flex items-start gap-4">
-              <Utensils size={22} className="text-[#2563EB] mt-1" />
-              <div className="flex flex-col items-start">
-                <p className="text-xl font-semibold text-gray-800">Alimentação</p>
-                <p className="text-xs text-gray-500 uppercase">Categoria mais utilizada</p>
-              </div>
-            </div>
-          </div>
+          <CategoryIndicator
+            icon={Tag}
+            iconColor="text-gray-500"
+            value={categories.length}
+            label="Total de categorias"
+          />
+          <CategoryIndicator
+            icon={ArrowUpDown}
+            iconColor="text-[#9333EA]"
+            value={totalTransactions}
+            label="Total de transações"
+          />
+          <CategoryIndicator
+            icon={Utensils}
+            iconColor="text-[#2563EB]"
+            value={mostUsed?.name ?? "—"}
+            label="Categoria mais utilizada"
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
-          {mockCategories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              icon={category.icon}
-              iconBgColor={category.iconBgColor}
-              iconColor={category.iconColor}
-              name={category.name}
-              description={category.description}
-              badgeBgColor={category.badgeBgColor}
-              badgeTextColor={category.badgeTextColor}
-              itemCount={category.itemCount}
-              onDelete={() => console.log("delete", category.id)}
-              onEdit={() => console.log("edit", category.id)}
-            />
-          ))}
+          {loading && (
+            <p className="col-span-4 text-center text-sm text-gray-400">Carregando...</p>
+          )}
+          {categories.map((category) => {
+            const icon = ICON_MAP[category.icon ?? ""] ?? DEFAULT_ICON;
+            const colors = COLOR_MAP[category.color ?? ""] ?? DEFAULT_COLOR;
+            return (
+              <CategoryCard
+                key={category.id}
+                icon={icon}
+                iconBgColor={colors.iconBg}
+                iconColor={colors.iconColor}
+                name={category.name}
+                description={category.description ?? ""}
+                badgeBgColor={colors.badgeBg}
+                badgeTextColor={colors.badgeText}
+                itemCount={category.transactionCount ?? 0}
+                onEdit={() => handleEdit(category)}
+                onDelete={() => handleDelete(category.id)}
+              />
+            );
+          })}
         </div>
       </div>
 
-      <CreateCategoryDialog open={openDialog} onOpenChange={setOpenDialog} />
+      <CreateCategoryDialog
+        key={editingCategory?.id ?? "new"}
+        open={openDialog}
+        onOpenChange={handleDialogClose}
+        onSuccess={() => refetch()}
+        category={editingCategory}
+      />
     </Page>
   );
 }

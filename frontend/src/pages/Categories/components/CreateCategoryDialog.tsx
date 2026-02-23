@@ -2,30 +2,42 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { CATEGORY, UPDATE_CATEGORY } from "@/lib/graphql/mutations/Category";
+import { useMutation } from "@apollo/client/react";
 import {
-    BaggageClaim,
-    BookOpen,
-    BriefcaseBusiness,
-    Car,
-    Dumbbell,
-    Gift,
-    HeartPulse,
-    Home,
-    Mailbox,
-    PawPrint,
-    PiggyBank,
-    ReceiptText,
-    ShoppingCart,
-    Ticket,
-    ToolCase,
-    Utensils
+  BaggageClaim,
+  BookOpen,
+  BriefcaseBusiness,
+  Car,
+  Dumbbell,
+  Gift,
+  HeartPulse,
+  Home,
+  Mailbox,
+  PawPrint,
+  PiggyBank,
+  ReceiptText,
+  ShoppingCart,
+  Ticket,
+  ToolCase,
+  Utensils
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+}
 
 interface CreateCategoryDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;
+  category?: Category;
 }
 
 const ICONS = [
@@ -61,24 +73,73 @@ export function CreateCategoryDialog({
   open,
   onOpenChange,
   onSuccess,
+  category,
 }: CreateCategoryDialogProps) {
+  const isEditing = !!category;
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedIcon, setSelectedIcon] = useState("briefcase");
+  const [selectedIcon, setSelectedIcon] = useState("briefcaseBusiness");
   const [selectedColor, setSelectedColor] = useState("green");
+
+  useEffect(() => {
+    if (category) {
+      setTitle(category.name);
+      setDescription(category.description ?? "");
+      setSelectedIcon(category.icon ?? "briefcaseBusiness");
+      setSelectedColor(category.color ?? "green");
+    } else {
+      setTitle("");
+      setDescription("");
+      setSelectedIcon("briefcaseBusiness");
+      setSelectedColor("green");
+    }
+  }, [category, open]);
+
+  const [createCategory, { loading: creating }] = useMutation(CATEGORY, {
+    onCompleted() {
+      toast.success("Categoria criada com sucesso!");
+      onOpenChange(false);
+      onSuccess?.();
+    },
+    onError() {
+      toast.error("Erro ao criar categoria.");
+    },
+  });
+
+  const [updateCategory, { loading: updating }] = useMutation(UPDATE_CATEGORY, {
+    onCompleted() {
+      toast.success("Categoria atualizada com sucesso!");
+      onOpenChange(false);
+      onSuccess?.();
+    },
+    onError() {
+      toast.error("Erro ao atualizar categoria.");
+    },
+  });
+
+  const loading = creating || updating;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSuccess?.();
+    const data = { name: title, description, icon: selectedIcon, color: selectedColor };
+
+    if (isEditing) {
+      updateCategory({ variables: { id: category.id, data } });
+    } else {
+      createCategory({ variables: { data } });
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Nova categoria</DialogTitle>
+          <DialogTitle className="text-xl font-bold">
+            {isEditing ? "Editar categoria" : "Nova categoria"}
+          </DialogTitle>
           <DialogDescription>
-            Organize suas transações com categorias
+            {isEditing ? "Atualize os dados da categoria" : "Organize suas transações com categorias"}
           </DialogDescription>
         </DialogHeader>
 
@@ -87,7 +148,8 @@ export function CreateCategoryDialog({
           <div className="space-y-1.5">
             <Label htmlFor="title">Título</Label>
             <Input
-            className="h-11"
+              disabled={loading}
+              className="h-11"
               id="title"
               placeholder="Ex. Alimentação"
               value={title}
@@ -99,6 +161,7 @@ export function CreateCategoryDialog({
           <div className="space-y-1.5">
             <Label htmlFor="description">Descrição</Label>
             <Input
+              disabled={loading}
               className="h-11"
               id="description"
               placeholder="Descrição da categoria"
@@ -114,6 +177,7 @@ export function CreateCategoryDialog({
             <div className="grid grid-cols-8 gap-2">
               {ICONS.map(({ key, Icon }) => (
                 <button
+                  disabled={loading}
                   key={key}
                   type="button"
                   onClick={() => setSelectedIcon(key)}
@@ -135,10 +199,12 @@ export function CreateCategoryDialog({
             <div className="flex items-center gap-4">
               {COLORS.map(({ key, value }) => (
                 <button
+                  disabled={loading}
                   key={key}
                   type="button"
                   onClick={() => setSelectedColor(key)}
                   style={{ backgroundColor: value }}
+                  aria-label={key}
                   className={`h-6 w-10 rounded-sm transition-all flex-1
                     ${selectedColor === key
                       ? "ring-1 ring-offset-4 ring-[#1F6F43]"
@@ -149,8 +215,8 @@ export function CreateCategoryDialog({
             </div>
           </div>
 
-          <Button type="submit" className="w-full h-11 bg-[#1F6F43] hover:bg-[#185836] text-white">
-            Salvar
+          <Button disabled={loading} type="submit" className="w-full h-11 bg-[#1F6F43] hover:bg-[#185836] text-white">
+            {isEditing ? "Atualizar" : "Salvar"}
           </Button>
         </form>
       </DialogContent>

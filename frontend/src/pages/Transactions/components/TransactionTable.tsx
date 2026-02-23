@@ -147,7 +147,7 @@ interface TransactionTableProps {
 }
 
 export function TransactionTable({ onDelete, onEdit }: TransactionTableProps) {
-  const qtdItensTable = 7;
+  const qtdItensTable = 6;
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(mockTransactions.length / qtdItensTable);
