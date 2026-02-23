@@ -57,7 +57,7 @@ export function Header() {
 
             {/* Nav mobile */}
             {isAuthenticated && menuOpen && (
-                <nav className="md:hidden border-t border-gray-100 bg-white px-4 py-3 flex flex-col gap-1 text-sm">
+                <nav className="md:hidden border-t border-gray-100 bg-white px-4 py-3 flex flex-col gap-4 text-sm">
                     <NavLink
                         to="/"
                         end

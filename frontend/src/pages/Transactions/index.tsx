@@ -71,13 +71,13 @@ export function Transactions() {
 
   return (
     <Page>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="space-y-3 lg:space-y-6">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-2">
           <div>
             <Label className="text-xl text-semibold">Transações</Label>
             <p className="text-sm text-gray-500">Gerencie todas as suas transações financeiras</p>
           </div>
-          <Button type="button" className="text-xs" onClick={() => setOpenDialog(true)}>
+          <Button type="button" className="text-xs w-full lg:w-auto" onClick={() => setOpenDialog(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Nova Transação
           </Button>
@@ -95,6 +95,7 @@ export function Transactions() {
           onCategoriaChange={setCategoria}
           onPeriodoChange={setPeriodo}
         />
+
 
         <TransactionTable
           key={`${search}-${tipo}-${categoria}-${periodo}`}

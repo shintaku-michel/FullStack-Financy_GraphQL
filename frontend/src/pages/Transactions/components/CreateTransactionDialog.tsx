@@ -142,7 +142,7 @@ export function CreateTransactionDialog({
           <div className="space-y-1.5">
             <Label htmlFor="description">Descrição</Label>
             <Input
-              className="h-11"
+              className="h-11 text-sm"
               id="description"
               placeholder="Ex. Almoço no restaurante"
               value={description}
@@ -159,7 +159,7 @@ export function CreateTransactionDialog({
                 R$
               </span>
               <Input
-                className="h-11 pl-9"
+                className="h-11 pl-9 text-sm"
                 id="amount"
                 type="number"
                 step="0.01"

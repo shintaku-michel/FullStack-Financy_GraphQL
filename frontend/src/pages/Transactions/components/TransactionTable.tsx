@@ -91,25 +91,26 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
 
   return (
     <div className="rounded-xl bg-white shadow-sm overflow-hidden">
+      <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
           <tr className="border-b border-gray-100">
             <th className="text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-6 py-4">
               Descrição
             </th>
-            <th className="text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden sm:table-cell text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
               Data
             </th>
-            <th className="text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden md:table-cell text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
               Categoria
             </th>
-            <th className="text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden sm:table-cell text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
               Tipo
             </th>
-            <th className="text-right text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden sm:table-cell text-right text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
               Valor
             </th>
-            <th className="text-right text-xs font-normal text-gray-400 uppercase tracking-wide px-6 py-4">
+            <th className="hidden sm:table-cell text-right text-xs font-normal text-gray-400 uppercase tracking-wide px-6 py-4">
               Ações
             </th>
           </tr>
@@ -139,17 +140,45 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                 )}
               >
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <div className={cn("p-2 rounded-lg shrink-0", colors.iconBg)}>
+                  <div className="flex items-start lg:items-center gap-3">
+                    <div className={cn("p-2 rounded-lg shrink-0 mt-0.5 lg:mt-0", colors.iconBg)}>
                       <Icon size={16} className={colors.iconColor} />
                     </div>
-                    <span className="font-medium text-gray-800 text-sm">{tx.description}</span>
+                    <div className="min-w-0">
+                      <span className="font-medium text-gray-800 text-sm block truncate">{tx.description}</span>
+                      <div className="sm:hidden flex items-center gap-2 text-xs text-gray-400">
+                        <span>{formattedDate}</span>
+                        <span className={tx.type === "INCOME" ? "text-green-600" : "text-red-600"}>
+                          {tx.type === "INCOME" ? "+" : "-"} R${" "}
+                          {tx.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                        </span>
+                      </div>
+                      <span className={"sm:hidden text-xs rounded-full font-normal text-gray-400"}>{tx.category.name}</span>
+                    </div>
+                  </div>
+                  <div className="sm:hidden flex items-center gap-2 mt-2 pl-11">
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      onClick={() => onDelete?.(tx.id)}
+                      className="text-red-400 hover:text-red-600 hover:bg-red-50 border-gray-200"
+                    >
+                      <Trash2 size={14} />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      onClick={() => onEdit?.(tx)}
+                      className="text-gray-400 hover:text-gray-600 border-gray-200"
+                    >
+                      <SquarePen size={14} />
+                    </Button>
                   </div>
                 </td>
 
-                <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{formattedDate}</td>
+                <td className="hidden sm:table-cell px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{formattedDate}</td>
 
-                <td className="px-4 py-4">
+                <td className="hidden md:table-cell px-4 py-4">
                   <span
                     className={cn(
                       "text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap",
@@ -161,7 +190,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                   </span>
                 </td>
 
-                <td className="px-4 py-4">
+                <td className="hidden sm:table-cell px-4 py-4">
                   {tx.type === "INCOME" ? (
                     <div className="flex items-center gap-1.5 text-green-600">
                       <CircleArrowUp size={15} />
@@ -175,14 +204,14 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                   )}
                 </td>
 
-                <td className="px-4 py-4 text-right whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-800">
+                <td className="hidden sm:table-cell px-4 py-4 text-right whitespace-nowrap">
+                  <span className={cn("text-sm font-medium", tx.type === "INCOME" ? "text-green-600" : "text-red-600")}>
                     {tx.type === "INCOME" ? "+" : "-"} R${" "}
                     {tx.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                   </span>
                 </td>
 
-                <td className="px-6 py-4">
+                <td className="hidden sm:table-cell px-6 py-4">
                   <div className="flex items-center justify-end gap-2">
                     <Button
                       variant="outline"
@@ -214,6 +243,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
           )}
         </tbody>
       </table>
+      </div>
 
       <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
         <span className="text-sm text-gray-500">
