@@ -4,6 +4,9 @@
 # -----------------------------------------------
 
 input CategoryInput {
+  color: String
+  description: String
+  icon: String
   name: String!
 }
 
@@ -11,9 +14,13 @@ type CategoryModel {
   author: UserModel!
   authorId: ID!
   authorName: String!
+  color: String
   createdAt: DateTimeISO!
+  description: String
+  icon: String
   id: ID!
   name: String!
+  transactionCount: Int!
   updatedAt: DateTimeISO!
 }
 

@@ -8,7 +8,7 @@ export class CategoryService {
         });
         if (existing) throw new Error("Categoria já cadastrada.");
         return prismaClient.category.create({
-            data: { name: data.name, authorId }
+            data: { name: data.name, description: data.description, icon: data.icon, color: data.color, authorId }
         });
     }
 
@@ -26,7 +26,7 @@ export class CategoryService {
 
         return prismaClient.category.update({
             where: { id },
-            data: { name: data.name }
+            data: { name: data.name, description: data.description, icon: data.icon, color: data.color }
         });
     }
 

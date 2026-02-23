@@ -1,6 +1,7 @@
-import { Arg, FieldResolver, ID, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
+import { Arg, FieldResolver, ID, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { CategoryInput } from "../dtos/input/category.input";
 import { GqlUser } from "../graphql/decorators/user.decorator";
+import { prismaClient } from "../../prisma/prisma";
 import { IsAuth } from "../middlewares/auth.middlewares";
 import { CategoryModel } from "../models/category.model";
 import { UserModel } from "../models/user.model";
@@ -52,5 +53,10 @@ export class CategoryResolver {
     async authorName(@Root() category: CategoryModel): Promise<string> {
         const user = await this.userService.findUser(category.authorId);
         return user.name;
+    }
+
+    @FieldResolver(() => Int)
+    async transactionCount(@Root() category: CategoryModel): Promise<number> {
+        return prismaClient.transaction.count({ where: { categoryId: category.id } });
     }
 }
