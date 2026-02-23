@@ -149,7 +149,7 @@ export function CreateCategoryDialog({
             <Label htmlFor="title">Título</Label>
             <Input
               disabled={loading}
-              className="h-11"
+              className="h-11 text-sm"
               id="title"
               placeholder="Ex. Alimentação"
               value={title}
@@ -162,7 +162,7 @@ export function CreateCategoryDialog({
             <Label htmlFor="description">Descrição</Label>
             <Input
               disabled={loading}
-              className="h-11"
+              className="h-11 text-sm"
               id="description"
               placeholder="Descrição da categoria"
               value={description}
@@ -174,14 +174,14 @@ export function CreateCategoryDialog({
           {/* Ícone */}
           <div className="space-y-2">
             <Label>Ícone</Label>
-            <div className="grid grid-cols-8 gap-2">
+            <div className="grid grid-cols-8 gap-2 overflow-hidden">
               {ICONS.map(({ key, Icon }) => (
                 <button
                   disabled={loading}
                   key={key}
                   type="button"
                   onClick={() => setSelectedIcon(key)}
-                  className={`h-10 w-10 flex items-center justify-center rounded-lg border transition-colors
+                  className={`aspect-square w-full flex items-center justify-center rounded-lg border transition-colors
                     ${selectedIcon === key
                       ? "border border-[#1F6F43] bg-white"
                       : "border-gray-200 hover:border-[#1F6F43]"
@@ -196,7 +196,7 @@ export function CreateCategoryDialog({
           {/* Cor */}
           <div className="space-y-2">
             <Label>Cor</Label>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 px-1.5">
               {COLORS.map(({ key, value }) => (
                 <button
                   disabled={loading}
@@ -205,7 +205,7 @@ export function CreateCategoryDialog({
                   onClick={() => setSelectedColor(key)}
                   style={{ backgroundColor: value }}
                   aria-label={key}
-                  className={`h-6 w-10 rounded-sm transition-all flex-1
+                  className={`h-6 w-6 lg:w-10 rounded-sm transition-all flex-1
                     ${selectedColor === key
                       ? "ring-1 ring-offset-4 ring-[#1F6F43]"
                       : "opacity-80 hover:opacity-100 hover:ring-1 hover:ring-offset-4 hover:ring-[#1F6F43]"
@@ -215,7 +215,7 @@ export function CreateCategoryDialog({
             </div>
           </div>
 
-          <Button disabled={loading} type="submit" className="w-full h-11 bg-[#1F6F43] hover:bg-[#185836] text-white">
+          <Button disabled={loading} type="submit" className="w-full h-10 bg-[#1F6F43] hover:bg-[#185836] text-white">
             {isEditing ? "Atualizar" : "Salvar"}
           </Button>
         </form>

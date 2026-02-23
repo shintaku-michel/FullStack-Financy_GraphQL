@@ -28,8 +28,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { CategoryIndicator } from "./components/CategoryIndicator";
 import { CategoryCard } from "./components/CategoryCard";
+import { CategoryIndicator } from "./components/CategoryIndicator";
 import { CreateCategoryDialog } from "./components/CreateCategoryDialog";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -71,6 +71,7 @@ interface Category {
   icon?: string;
   color?: string;
   transactionCount?: number;
+  createdAt: string;
 }
 
 export function Categories() {
@@ -81,7 +82,9 @@ export function Categories() {
 
   if (error) console.error("[ListCategories]", error.message);
 
-  const categories = data?.listCategories ?? [];
+  const categories = [...(data?.listCategories ?? [])].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
   const totalTransactions = categories.reduce((sum, cat) => sum + (cat.transactionCount ?? 0), 0);
   const mostUsed = categories.reduce<Category | undefined>(
@@ -116,18 +119,18 @@ export function Categories() {
   return (
     <Page>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-2">
           <div>
             <Label className="text-xl text-semibold">Categorias</Label>
             <p className="text-sm text-gray-500">Organize suas transações por categorias</p>
           </div>
-          <Button type="button" className="text-xs" onClick={() => setOpenDialog(true)}>
+          <Button type="button" className="text-xs w-full lg:w-auto" onClick={() => setOpenDialog(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Nova Categoria
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 lg:gap-6">
           <CategoryIndicator
             icon={Tag}
             iconColor="text-gray-500"

@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/stores/auth"
-import { Menu, X } from "lucide-react"
+import { LogOut, Menu, X } from "lucide-react"
 import { useState } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import logo from '../assets/imgs/logo.svg'
 
 function getInitials(name: string) {
@@ -18,8 +18,14 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
         : "font-semibold text-gray-600 hover:text-[#1F6F43] transition-colors"
 
 export function Header() {
-    const { user, isAuthenticated } = useAuthStore()
+    const { user, logout, isAuthenticated } = useAuthStore()
     const [menuOpen, setMenuOpen] = useState(false)
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        logout()
+        navigate("/login")
+    }
 
     return (
         <header className="w-full bg-white border-b border-gray-200">
@@ -41,6 +47,13 @@ export function Header() {
                                     {getInitials(user.name)}
                                 </div>
                             )}
+
+                            <button
+                                type="button"
+                                onClick={handleLogout}
+                                className="flex items-center gap-1 text-sm text-[#1F6F43] font-normal cursor-pointer">
+                                <LogOut className="w-5 h-5" />
+                            </button>
 
                             {/* Botão hambúrguer — mobile */}
                             <button

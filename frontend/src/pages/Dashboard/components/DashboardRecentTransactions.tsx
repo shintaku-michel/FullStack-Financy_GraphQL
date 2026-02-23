@@ -11,9 +11,10 @@ import {
 
 interface DashboardRecentTransactionsProps {
   transactions: Transaction[];
+  onNewTransaction: () => void;
 }
 
-export function DashboardRecentTransactions({ transactions }: DashboardRecentTransactionsProps) {
+export function DashboardRecentTransactions({ transactions, onNewTransaction }: DashboardRecentTransactionsProps) {
   return (
     <div className="col-span-1 lg:col-span-2 rounded-xl bg-white shadow-sm">
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
@@ -67,12 +68,12 @@ export function DashboardRecentTransactions({ transactions }: DashboardRecentTra
       </div>
 
       <div className="px-6 py-4 border-t border-gray-100">
-        <Link
-          to="/transactions"
-          className="flex items-center gap-1 text-sm text-[#1F6F43] mx-auto font-normal w-fit"
-        >
+        <button
+          type="button"
+          onClick={onNewTransaction}
+          className="flex items-center gap-1 text-sm text-[#1F6F43] mx-auto font-normal cursor-pointer">
           <Plus size={14} /> Nova transação
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -3,13 +3,17 @@ import { LIST_CATEGORIES } from "@/lib/graphql/queries/Categories";
 import { LIST_TRANSACTIONS } from "@/lib/graphql/queries/Transactions";
 import { useQuery } from "@apollo/client/react";
 import { CircleArrowDown, CircleArrowUp, Wallet } from "lucide-react";
+import { useState } from "react";
+import { CreateTransactionDialog } from "../Transactions/components/CreateTransactionDialog";
 import { DashboardCategories } from "./components/DashboardCategories";
 import { DashboardRecentTransactions } from "./components/DashboardRecentTransactions";
 import { DashboardSummaryCard } from "./components/DashboardSummaryCard";
 import { formatCurrency, type Category, type Transaction } from "./dashboard.utils";
 
 export function Dashboard() {
-  const { data: txData } = useQuery<{ listTransactions: Transaction[] }>(LIST_TRANSACTIONS);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const { data: txData, refetch } = useQuery<{ listTransactions: Transaction[] }>(LIST_TRANSACTIONS);
   const { data: catData } = useQuery<{ listCategories: Category[] }>(LIST_CATEGORIES);
 
   const allTransactions = txData?.listTransactions ?? [];
@@ -71,10 +75,20 @@ export function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <DashboardRecentTransactions transactions={recentTransactions} />
+          <DashboardRecentTransactions
+            transactions={recentTransactions}
+            onNewTransaction={() => setOpenDialog(true)}
+          />
           <DashboardCategories categories={categoriesData} />
         </div>
       </div>
+
+      <CreateTransactionDialog
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        onSuccess={() => refetch()}
+        categories={catData?.listCategories ?? []}
+      />
     </Page>
   );
 }
