@@ -1,129 +1,117 @@
 import { Page } from "@/components/Page";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  ChevronDown,
-  Plus,
-  Search,
-} from "lucide-react";
+import { DELETE_TRANSACTION } from "@/lib/graphql/mutations/Transaction";
+import { LIST_CATEGORIES } from "@/lib/graphql/queries/Categories";
+import { LIST_TRANSACTIONS } from "@/lib/graphql/queries/Transactions";
+import { useMutation, useQuery } from "@apollo/client/react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { CreateTransactionDialog } from "./components/CreateTransactionDialog";
-import { TransactionTable } from "./components/TransactionTable";
+import { TransactionFilters } from "./components/TransactionFilters";
+import { TransactionTable, type Transaction } from "./components/TransactionTable";
 
-const selectClass =
-  "flex h-10 w-full appearance-none rounded-md border border-input bg-background pl-3 pr-8 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
+interface Category {
+  id: string;
+  name: string;
+}
 
 export function Transactions() {
   const [openDialog, setOpenDialog] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | undefined>(undefined);
   const [search, setSearch] = useState("");
   const [tipo, setTipo] = useState("todos");
   const [categoria, setCategoria] = useState("todas");
-  const [periodo, setPeriodo] = useState("2026-02");
+  const [periodo, setPeriodo] = useState("");
+
+  const { data: txData, loading: txLoading, error: txError, refetch } = useQuery<{ listTransactions: Transaction[] }>(LIST_TRANSACTIONS);
+  const { data: catData } = useQuery<{ listCategories: Category[] }>(LIST_CATEGORIES);
+
+  if (txError) console.error("[ListTransactions]", txError.message);
+
+  const allTransactions = txData?.listTransactions ?? [];
+  const categories = catData?.listCategories ?? [];
+
+  const availablePeriods = Array.from(
+    new Set(allTransactions.map((tx) => tx.createdAt.slice(0, 7)))
+  ).sort().reverse();
+
+  const [deleteTransaction] = useMutation(DELETE_TRANSACTION, {
+    onCompleted() {
+      toast.success("Transação excluída com sucesso!");
+      refetch();
+    },
+    onError(err) {
+      toast.error(err.message);
+    },
+  });
+
+  const transactions = allTransactions
+    .filter((tx) => !search || tx.description.toLowerCase().includes(search.toLowerCase()))
+    .filter((tx) => tipo === "todos" || (tipo === "receita" ? tx.type === "INCOME" : tx.type === "EXPENSE"))
+    .filter((tx) => categoria === "todas" || tx.category.id === categoria)
+    .filter((tx) => !periodo || tx.createdAt.slice(0, 7) === periodo)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  function handleEdit(transaction: Transaction) {
+    setEditingTransaction(transaction);
+    setOpenDialog(true);
+  }
+
+  function handleDelete(id: string) {
+    deleteTransaction({ variables: { id } });
+  }
+
+  function handleDialogClose(open: boolean) {
+    setOpenDialog(open);
+    if (!open) setEditingTransaction(undefined);
+  }
 
   return (
     <Page>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div>  
+          <div>
             <Label className="text-xl text-semibold">Transações</Label>
             <p className="text-sm text-gray-500">Gerencie todas as suas transações financeiras</p>
           </div>
-          <Button type="submit" className="text-xs" onClick={() => setOpenDialog(true)}>
+          <Button type="button" className="text-xs" onClick={() => setOpenDialog(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Nova Transação
-          </Button> 
+          </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <div className="flex flex-row items-end gap-4">
-              <div className="flex-1">
-                <Label htmlFor="search" className="text-xs text-muted-foreground">Buscar</Label>
-                <div className="relative mt-1">
-                  <Search
-                    size={16}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                  />
-                  <Input
-                    id="search"
-                    className="h-10 pl-9"
-                    placeholder="Buscar por descrição"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="flex-1">
-                <Label htmlFor="tipo" className="text-xs text-muted-foreground">Tipo</Label>
-                <div className="relative mt-1">
-                  <select
-                    id="tipo"
-                    value={tipo}
-                    onChange={(e) => setTipo(e.target.value)}
-                    className={selectClass}
-                  >
-                    <option value="todos">Todos</option>
-                    <option value="receita">Receita</option>
-                    <option value="despesa">Despesa</option>
-                  </select>
-                  <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                </div>
-              </div>
-
-              <div className="flex-1">
-                <Label htmlFor="categoria" className="text-xs text-muted-foreground">Categoria</Label>
-                <div className="relative mt-1">
-                  <select
-                    id="categoria"
-                    value={categoria}
-                    onChange={(e) => setCategoria(e.target.value)}
-                    className={selectClass}
-                  >
-                    <option value="todas">Todas</option>
-                    <option value="alimentacao">Alimentação</option>
-                    <option value="entretenimento">Entretenimento</option>
-                    <option value="investimento">Investimento</option>
-                    <option value="mercado">Mercado</option>
-                    <option value="salario">Salário</option>
-                    <option value="saude">Saúde</option>
-                    <option value="transporte">Transporte</option>
-                    <option value="utilidades">Utilidades</option>
-                  </select>
-                  <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                </div>
-              </div>
-
-              <div className="flex-1">
-                <Label htmlFor="periodo" className="text-xs text-muted-foreground">Período</Label>
-                <div className="relative mt-1">
-                  <select
-                    id="periodo"
-                    value={periodo}
-                    onChange={(e) => setPeriodo(e.target.value)}
-                    className={selectClass}
-                  >
-                    <option value="2025-10">Outubro / 2025</option>
-                    <option value="2025-11">Novembro / 2025</option>
-                    <option value="2025-12">Dezembro / 2025</option>
-                    <option value="2026-01">Janeiro / 2026</option>
-                    <option value="2026-02">Fevereiro / 2026</option>
-                  </select>
-                  <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TransactionFilters
+          search={search}
+          tipo={tipo}
+          categoria={categoria}
+          periodo={periodo}
+          categories={categories}
+          availablePeriods={availablePeriods}
+          onSearchChange={setSearch}
+          onTipoChange={setTipo}
+          onCategoriaChange={setCategoria}
+          onPeriodoChange={setPeriodo}
+        />
 
         <TransactionTable
-          onDelete={(id) => console.log("delete", id)}
-          onEdit={(id) => console.log("edit", id)}
+          key={`${search}-${tipo}-${categoria}-${periodo}`}
+          transactions={transactions}
+          loading={txLoading}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
         />
       </div>
 
-      <CreateTransactionDialog open={openDialog} onOpenChange={setOpenDialog} />
+      <CreateTransactionDialog
+        key={editingTransaction?.id ?? "new"}
+        open={openDialog}
+        onOpenChange={handleDialogClose}
+        onSuccess={() => refetch()}
+        transaction={editingTransaction}
+        categories={categories}
+      />
     </Page>
   );
 }
