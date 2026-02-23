@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CREATE_TRANSACTION, UPDATE_TRANSACTION } from "@/lib/graphql/mutations/Transaction";
+import { LIST_CATEGORIES } from "@/lib/graphql/queries/Categories";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@apollo/client/react";
 import { ChevronDown, CircleArrowDown, CircleArrowUp } from "lucide-react";
@@ -53,6 +54,7 @@ export function CreateTransactionDialog({
   }, [transaction]);
 
   const [createTransaction, { loading: creating }] = useMutation(CREATE_TRANSACTION, {
+    refetchQueries: [LIST_CATEGORIES],
     onCompleted() {
       toast.success("Transação criada com sucesso!");
       onSuccess?.();
@@ -64,6 +66,7 @@ export function CreateTransactionDialog({
   });
 
   const [updateTransaction, { loading: updating }] = useMutation(UPDATE_TRANSACTION, {
+    refetchQueries: [LIST_CATEGORIES],
     onCompleted() {
       toast.success("Transação atualizada com sucesso!");
       onSuccess?.();
@@ -76,7 +79,7 @@ export function CreateTransactionDialog({
 
   const loading = creating || updating;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = {
       description,

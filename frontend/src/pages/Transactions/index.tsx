@@ -38,6 +38,7 @@ export function Transactions() {
   ).sort().reverse();
 
   const [deleteTransaction] = useMutation(DELETE_TRANSACTION, {
+    refetchQueries: [LIST_CATEGORIES],
     onCompleted() {
       toast.success("Transação excluída com sucesso!");
       refetch();
