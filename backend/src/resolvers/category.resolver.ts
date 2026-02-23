@@ -1,7 +1,8 @@
-import { Arg, FieldResolver, ID, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
+import { Arg, Ctx, FieldResolver, ID, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { CategoryInput } from "../dtos/input/category.input";
 import { GqlUser } from "../graphql/decorators/user.decorator";
 import { prismaClient } from "../../prisma/prisma";
+import { GraphqlContext } from "../graphql/context";
 import { IsAuth } from "../middlewares/auth.middlewares";
 import { CategoryModel } from "../models/category.model";
 import { UserModel } from "../models/user.model";
@@ -40,8 +41,8 @@ export class CategoryResolver {
     }
 
     @Query(() => [CategoryModel])
-    async listCategories(): Promise<CategoryModel[]> {
-        return this.categoryService.listCategories();
+    async listCategories(@Ctx() ctx: GraphqlContext): Promise<CategoryModel[]> {
+        return this.categoryService.listCategories(ctx.user!);
     }
 
     @FieldResolver(() => UserModel)
@@ -56,7 +57,12 @@ export class CategoryResolver {
     }
 
     @FieldResolver(() => Int)
-    async transactionCount(@Root() category: CategoryModel): Promise<number> {
-        return prismaClient.transaction.count({ where: { categoryId: category.id } });
+    async transactionCount(
+        @Root() category: CategoryModel,
+        @Ctx() ctx: GraphqlContext
+    ): Promise<number> {
+        return prismaClient.transaction.count({
+            where: { categoryId: category.id, authorId: ctx.user! }
+        });
     }
 }

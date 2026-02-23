@@ -225,10 +225,11 @@ export type CategoryOrderByWithRelationInput = {
 
 export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  name?: string
+  name_authorId?: Prisma.CategoryNameAuthorIdCompoundUniqueInput
   AND?: Prisma.CategoryWhereInput | Prisma.CategoryWhereInput[]
   OR?: Prisma.CategoryWhereInput[]
   NOT?: Prisma.CategoryWhereInput | Prisma.CategoryWhereInput[]
+  name?: Prisma.StringFilter<"Category"> | string
   description?: Prisma.StringNullableFilter<"Category"> | string | null
   icon?: Prisma.StringNullableFilter<"Category"> | string | null
   color?: Prisma.StringNullableFilter<"Category"> | string | null
@@ -237,7 +238,7 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   authorId?: Prisma.StringFilter<"Category"> | string
   transactions?: Prisma.TransactionListRelationFilter
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "name">
+}, "id" | "name_authorId">
 
 export type CategoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -355,6 +356,11 @@ export type CategoryListRelationFilter = {
 
 export type CategoryOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type CategoryNameAuthorIdCompoundUniqueInput = {
+  name: string
+  authorId: string
 }
 
 export type CategoryCountOrderByAggregateInput = {

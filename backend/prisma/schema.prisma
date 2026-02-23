@@ -28,7 +28,7 @@ enum TransactionType {
 
 model Category {
   id           String        @id @default(uuid())
-  name         String        @unique
+  name         String
   description  String?
   icon         String?
   color        String?
@@ -38,6 +38,8 @@ model Category {
 
   authorId     String
   author       User          @relation(fields: [authorId], references: [id])
+
+  @@unique([name, authorId])
 }
 
 model Transaction {

@@ -4,7 +4,7 @@ import { CategoryInput } from "../dtos/input/category.input";
 export class CategoryService {
     async createCategory(data: CategoryInput, authorId: string) {
         const existing = await prismaClient.category.findUnique({
-            where: { name: data.name }
+            where: { name_authorId: { name: data.name, authorId } }
         });
         if (existing) throw new Error("Categoria já cadastrada.");
         return prismaClient.category.create({
@@ -12,8 +12,8 @@ export class CategoryService {
         });
     }
 
-    async listCategories() {
-        return prismaClient.category.findMany();
+    async listCategories(authorId: string) {
+        return prismaClient.category.findMany({ where: { authorId } });
     }
 
     async updateCategory(id: string, data: CategoryInput, userId: string) {
@@ -21,7 +21,9 @@ export class CategoryService {
         if (!category) throw new Error("Categoria não encontrada.");
         if (category.authorId !== userId) throw new Error("Sem permissão para editar esta categoria.");
 
-        const nameConflict = await prismaClient.category.findUnique({ where: { name: data.name } });
+        const nameConflict = await prismaClient.category.findUnique({
+            where: { name_authorId: { name: data.name, authorId: userId } }
+        });
         if (nameConflict && nameConflict.id !== id) throw new Error("Já existe uma categoria com esse nome.");
 
         return prismaClient.category.update({
