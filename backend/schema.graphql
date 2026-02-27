@@ -40,6 +40,10 @@ type LoginOutput {
   user: UserModel!
 }
 
+input LogoutInput {
+  refreshToken: String!
+}
+
 type Mutation {
   createCategory(data: CategoryInput!): CategoryModel!
   createTransaction(data: TransactionInput!): TransactionModel!
@@ -47,6 +51,8 @@ type Mutation {
   deleteCategory(id: ID!): Boolean!
   deleteTransaction(id: ID!): Boolean!
   login(data: LoginInput!): LoginOutput!
+  logout(data: LogoutInput!): Boolean!
+  refreshToken(data: RefreshTokenInput!): RefreshTokenOutput!
   register(data: RegisterInput!): RegisterOutput!
   updateCategory(data: CategoryInput!, id: ID!): CategoryModel!
   updateTransaction(data: TransactionInput!, id: ID!): TransactionModel!
@@ -57,6 +63,15 @@ type Query {
   listCategories: [CategoryModel!]!
   listTransactions: [TransactionModel!]!
   listUsers: [UserModel!]!
+}
+
+input RefreshTokenInput {
+  refreshToken: String!
+}
+
+type RefreshTokenOutput {
+  refreshToken: String!
+  token: String!
 }
 
 input RegisterInput {

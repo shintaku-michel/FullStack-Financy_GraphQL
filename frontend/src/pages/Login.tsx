@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { getErrorMessage } from '@/lib/errors'
 import { useAuthStore } from '@/stores/auth'
 import { Eye, EyeClosed, Lock, Mail, UserRoundPlus } from 'lucide-react'
 import { useState } from 'react'
@@ -28,9 +29,9 @@ export function Login() {
             if(loginMutate) {
                 toast.success("Login realizado com sucesso!")
             }
-        }catch (error) {
-            toast.error("Erro ao realizar login. Verifique suas credenciais e tente novamente.")
-        }finally {
+        } catch (error) {
+            toast.error(getErrorMessage(error, "Erro ao realizar login."))
+        } finally {
             setLoading(false)
         }
     }

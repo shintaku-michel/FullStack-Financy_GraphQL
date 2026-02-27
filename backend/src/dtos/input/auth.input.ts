@@ -20,3 +20,15 @@ export class LoginInput {
     @Field(() => String)
     password!: string;
 }
+
+@InputType()
+export class RefreshTokenInput {
+    @Field(() => String)
+    refreshToken!: string;
+}
+
+@InputType()
+export class LogoutInput {
+    @Field(() => String)
+    refreshToken!: string;
+}

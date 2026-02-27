@@ -11,14 +11,25 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  name         String
-  email        String        @unique
-  password     String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  transactions Transaction[]
-  categories   Category[]
+  id             String          @id @default(uuid())
+  name           String
+  email          String          @unique
+  password       String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  transactions   Transaction[]
+  categories     Category[]
+  refreshTokens  RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 enum TransactionType {

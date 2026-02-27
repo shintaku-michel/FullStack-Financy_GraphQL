@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { getErrorMessage } from '@/lib/errors'
 import { Eye, EyeClosed, Lock, LogIn, Mail, User } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -30,8 +31,7 @@ export function Signup() {
                 toast.success("Cadastro realizado com sucesso!");
             }
         } catch (error) {
-            console.error("Erro no cadastro:");
-            throw error
+            toast.error(getErrorMessage(error, "Erro ao realizar cadastro."))
         } finally {
             setLoading(false)
         }

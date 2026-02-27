@@ -1,5 +1,6 @@
 import { prismaClient } from "../../prisma/prisma";
 import { TransactionInput } from "../dtos/input/transaction.input";
+import { AppError } from "../utils/errors";
 
 export class TransactionService {
     async createTransaction(data: TransactionInput, authorId: string) {
@@ -24,8 +25,8 @@ export class TransactionService {
 
     async updateTransaction(id: string, data: TransactionInput, authorId: string) {
         const transaction = await prismaClient.transaction.findUnique({ where: { id } });
-        if (!transaction) throw new Error("Transação não encontrada.");
-        if (transaction.authorId !== authorId) throw new Error("Sem permissão para editar esta transação.");
+        if (!transaction) throw AppError.notFound("Transação não encontrada.");
+        if (transaction.authorId !== authorId) throw AppError.forbidden("Sem permissão para editar esta transação.");
 
         return prismaClient.transaction.update({
             where: { id },
@@ -41,8 +42,8 @@ export class TransactionService {
 
     async deleteTransaction(id: string, authorId: string) {
         const transaction = await prismaClient.transaction.findUnique({ where: { id } });
-        if (!transaction) throw new Error("Transação não encontrada.");
-        if (transaction.authorId !== authorId) throw new Error("Sem permissão para excluir esta transação.");
+        if (!transaction) throw AppError.notFound("Transação não encontrada.");
+        if (transaction.authorId !== authorId) throw AppError.forbidden("Sem permissão para excluir esta transação.");
 
         await prismaClient.transaction.delete({ where: { id } });
         return true;
