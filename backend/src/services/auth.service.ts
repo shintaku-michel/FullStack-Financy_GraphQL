@@ -87,7 +87,7 @@ export class AuthService {
     }
 
     async generateTokens(user: User) {
-        const token = signJwt({ id: user.id, email: user.email }, "5s");
+        const token = signJwt({ id: user.id, email: user.email }, "30m");
         const refreshToken = signJwt({ id: user.id, email: user.email }, "1d");
 
         await prismaClient.refreshToken.create({
