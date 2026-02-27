@@ -47,3 +47,8 @@ cd frontend
 npm install
 npm run dev
 ```
+
+### Atualizações
+- [x] Implementação RefreshToken
+- [ ] Troca de imagem do usuário
+- [ ] DarkMode
