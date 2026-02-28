@@ -4,7 +4,7 @@ import { useAuthStore } from "@/stores/auth"
 import { LogOut, Menu, Moon, Sun, X } from "lucide-react"
 import { useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
-import logo from '../assets/imgs/logo.svg'
+import { Logo } from '../assets/imgs/Logo'
 
 function getInitials(name: string) {
     return name
@@ -16,8 +16,8 @@ function getInitials(name: string) {
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive
-        ? "font-semibold text-[#1F6F43] dark:text-green-400"
-        : "font-semibold text-gray-600 dark:text-gray-300 hover:text-[#1F6F43] dark:hover:text-green-400 transition-colors"
+        ? "font-semibold text-emerald-700 dark:text-emerald-400"
+        : "font-semibold text-gray-600 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
 
 export function Header() {
     const { user, logout, isAuthenticated } = useAuthStore()
@@ -37,7 +37,7 @@ export function Header() {
                 {isAuthenticated && (
                     <>
                     <div className="flex gap-12">
-                        <img src={logo} alt="Logo" className="h-7" />
+                        <Logo className="h-7 text-emerald-700 dark:text-emerald-400" />
                         {/* Nav desktop */}
                         <nav className="hidden md:flex items-center gap-6 text-sm">
                             <NavLink to="/" end className={navLinkClass}>Dashboard</NavLink>

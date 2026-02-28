@@ -62,7 +62,7 @@ export function Dashboard() {
           />
           <DashboardSummaryCard
             icon={CircleArrowUp}
-            iconColor="text-green-500"
+            iconColor="text-emerald-700 dark:text-emerald-400"
             label="Receitas do mês"
             value={formatCurrency(monthlyIncome)}
           />

@@ -13,7 +13,7 @@ export function DashboardCategories({ categories }: DashboardCategoriesProps) {
         <span className="text-xs font-normal text-gray-500 dark:text-gray-400 uppercase tracking-wide">
           Categorias
         </span>
-        <Link to="/categories" className="flex items-center gap-1 text-sm text-[#1F6F43] dark:text-green-400 font-normal">
+        <Link to="/categories" className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-400 font-normal">
           Gerenciar <ChevronRight size={14} />
         </Link>
       </div>

@@ -21,7 +21,7 @@ export function DashboardRecentTransactions({ transactions, onNewTransaction }: 
         <span className="text-xs font-normal text-gray-500 dark:text-gray-400 uppercase tracking-wide">
           Transações Recentes
         </span>
-        <Link to="/transactions" className="flex items-center gap-1 text-sm text-[#1F6F43] dark:text-green-400 font-normal">
+        <Link to="/transactions" className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-400 font-normal">
           Ver todas <ChevronRight size={14} />
         </Link>
       </div>
@@ -58,7 +58,7 @@ export function DashboardRecentTransactions({ transactions, onNewTransaction }: 
                   {tx.type === "INCOME" ? "+" : "-"} {formatCurrency(tx.amount)}
                 </span>
                 {tx.type === "INCOME"
-                  ? <CircleArrowUp size={16} className="text-green-500" />
+                  ? <CircleArrowUp size={16} className="text-emerald-700 dark:text-emerald-400" />
                   : <CircleArrowDown size={16} className="text-red-500" />
                 }
               </div>
@@ -71,7 +71,7 @@ export function DashboardRecentTransactions({ transactions, onNewTransaction }: 
         <button
           type="button"
           onClick={onNewTransaction}
-          className="flex items-center gap-1 text-sm text-[#1F6F43] dark:text-green-400 mx-auto font-normal cursor-pointer">
+          className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-400 mx-auto font-normal cursor-pointer">
           <Plus size={14} /> Nova transação
         </button>
       </div>

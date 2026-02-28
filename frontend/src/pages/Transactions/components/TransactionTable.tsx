@@ -1,64 +1,15 @@
 import { Button } from "@/components/ui/button";
+import { COLOR_MAP, DEFAULT_COLORS, DEFAULT_ICON, ICON_MAP } from "@/lib/categoryMaps";
 import { cn } from "@/lib/utils";
 import {
-  BaggageClaim,
-  BookOpen,
-  BriefcaseBusiness,
-  Car,
   ChevronLeft,
   ChevronRight,
   CircleArrowDown,
   CircleArrowUp,
-  Dumbbell,
-  Gift,
-  HeartPulse,
-  Home,
-  Mailbox,
-  PawPrint,
-  PiggyBank,
-  ReceiptText,
-  ShoppingCart,
   SquarePen,
-  Tag,
-  Ticket,
-  ToolCase,
   Trash2,
-  Utensils,
-  type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
-
-const ICON_MAP: Record<string, LucideIcon> = {
-  briefcaseBusiness: BriefcaseBusiness,
-  car: Car,
-  heartpulse: HeartPulse,
-  piggybank: PiggyBank,
-  cart: ShoppingCart,
-  ticket: Ticket,
-  toolcase: ToolCase,
-  utensils: Utensils,
-  pawprint: PawPrint,
-  home: Home,
-  gift: Gift,
-  dumbbell: Dumbbell,
-  book: BookOpen,
-  baggageclaim: BaggageClaim,
-  mailbox: Mailbox,
-  receipttext: ReceiptText,
-};
-
-const COLOR_MAP: Record<string, { iconBg: string; iconColor: string; badgeBg: string; badgeText: string }> = {
-  green:  { iconBg: "bg-green-100/10",   iconColor: "text-green-500",   badgeBg: "bg-green-100/10",   badgeText: "text-green-600"  },
-  blue:   { iconBg: "bg-blue-100/10",    iconColor: "text-blue-500",    badgeBg: "bg-blue-100/10",    badgeText: "text-blue-600"   },
-  purple: { iconBg: "bg-purple-100/10",  iconColor: "text-purple-500",  badgeBg: "bg-purple-100/10",  badgeText: "text-purple-600" },
-  pink:   { iconBg: "bg-pink-100/10",    iconColor: "text-pink-500",    badgeBg: "bg-pink-100/10",    badgeText: "text-pink-600"   },
-  red:    { iconBg: "bg-red-100/10",     iconColor: "text-red-500",     badgeBg: "bg-red-100/10",     badgeText: "text-red-600"    },
-  orange: { iconBg: "bg-orange-100/10",  iconColor: "text-orange-500",  badgeBg: "bg-orange-100/10",  badgeText: "text-orange-600" },
-  amber:  { iconBg: "bg-amber-100/10",   iconColor: "text-amber-500",   badgeBg: "bg-amber-100/10",   badgeText: "text-amber-600"  },
-};
-
-const DEFAULT_ICON = Tag;
-const DEFAULT_COLORS = COLOR_MAP.blue;
 
 export interface Transaction {
   id: string;
@@ -148,7 +99,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                       <span className="font-medium text-gray-800 dark:text-gray-100 text-sm block truncate">{tx.description}</span>
                       <div className="sm:hidden flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
                         <span>{formattedDate}</span>
-                        <span className={tx.type === "INCOME" ? "text-green-600" : "text-red-600"}>
+                        <span className={tx.type === "INCOME" ? "text-emerald-700 dark:text-emerald-400" : "text-red-600"}>
                           {tx.type === "INCOME" ? "+" : "-"} R${" "}
                           {tx.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                         </span>
@@ -192,7 +143,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
 
                 <td className="hidden sm:table-cell px-4 py-4">
                   {tx.type === "INCOME" ? (
-                    <div className="flex items-center gap-1.5 text-green-600">
+                    <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400">
                       <CircleArrowUp size={15} />
                       <span className="text-sm">Entrada</span>
                     </div>
@@ -205,7 +156,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                 </td>
 
                 <td className="hidden sm:table-cell px-4 py-4 text-right whitespace-nowrap">
-                  <span className={cn("text-sm font-medium", tx.type === "INCOME" ? "text-green-600" : "text-red-600")}>
+                  <span className={cn("text-sm font-medium", tx.type === "INCOME" ? "text-emerald-700 dark:text-emerald-400" : "text-red-600")}>
                     {tx.type === "INCOME" ? "+" : "-"} R${" "}
                     {tx.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                   </span>

@@ -129,7 +129,7 @@ export function CreateTransactionDialog({
               className={cn(
                 "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-colors",
                 type === "receita"
-                  ? "border border-[#1F6F43] bg-white text-[#1F6F43]"
+                  ? "border border-emerald-700 bg-white text-emerald-700"
                   : "text-gray-400 hover:text-gray-600"
               )}
             >
@@ -202,7 +202,7 @@ export function CreateTransactionDialog({
           <Button
             type="submit"
             disabled={loading}
-            className="w-full h-11 bg-[#1F6F43] hover:bg-[#185836] text-white"
+            className="w-full h-11 bg-emerald-700 hover:bg-emerald-800 text-white"
           >
             {loading ? "Salvando..." : isEditing ? "Atualizar" : "Salvar"}
           </Button>

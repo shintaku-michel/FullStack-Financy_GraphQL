@@ -183,8 +183,8 @@ export function CreateCategoryDialog({
                   onClick={() => setSelectedIcon(key)}
                   className={`aspect-square w-full flex items-center justify-center rounded-lg border transition-colors
                     ${selectedIcon === key
-                      ? "border border-[#1F6F43] bg-white"
-                      : "border-gray-200 hover:border-[#1F6F43]"
+                      ? "border border-emerald-700 bg-white"
+                      : "border-gray-200 hover:border-emerald-700"
                     }`}
                 >
                   <Icon size={18} className="text-gray-700" />
@@ -207,15 +207,15 @@ export function CreateCategoryDialog({
                   aria-label={key}
                   className={`h-6 w-6 lg:w-10 rounded-sm transition-all flex-1
                     ${selectedColor === key
-                      ? "ring-1 ring-offset-4 ring-[#1F6F43]"
-                      : "opacity-80 hover:opacity-100 hover:ring-1 hover:ring-offset-4 hover:ring-[#1F6F43]"
+                      ? "ring-1 ring-offset-4 ring-emerald-700"
+                      : "opacity-80 hover:opacity-100 hover:ring-1 hover:ring-offset-4 hover:ring-emerald-700"
                     }`}
                 />
               ))}
             </div>
           </div>
 
-          <Button disabled={loading} type="submit" className="w-full h-10 bg-[#1F6F43] hover:bg-[#185836] text-white">
+          <Button disabled={loading} type="submit" className="w-full h-10 bg-emerald-700 hover:bg-emerald-800 text-white">
             {isEditing ? "Atualizar" : "Salvar"}
           </Button>
         </form>

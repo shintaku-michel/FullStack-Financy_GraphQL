@@ -1,68 +1,16 @@
 import { Page } from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { COLOR_MAP, DEFAULT_COLORS, DEFAULT_ICON, ICON_MAP } from "@/lib/categoryMaps";
 import { DELETE_CATEGORY } from "@/lib/graphql/mutations/Category";
 import { LIST_CATEGORIES } from "@/lib/graphql/queries/Categories";
 import { useMutation, useQuery } from "@apollo/client/react";
-import {
-  ArrowUpDown,
-  BaggageClaim,
-  BookOpen,
-  BriefcaseBusiness,
-  Car,
-  Dumbbell,
-  Gift,
-  HeartPulse,
-  Home,
-  Mailbox,
-  PawPrint,
-  PiggyBank,
-  Plus,
-  ReceiptText,
-  ShoppingCart,
-  Tag,
-  Ticket,
-  ToolCase,
-  Utensils,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowUpDown, Plus, Tag, Utensils } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CategoryCard } from "./components/CategoryCard";
 import { CategoryIndicator } from "./components/CategoryIndicator";
 import { CreateCategoryDialog } from "./components/CreateCategoryDialog";
-
-const ICON_MAP: Record<string, LucideIcon> = {
-  briefcaseBusiness: BriefcaseBusiness,
-  car: Car,
-  heartpulse: HeartPulse,
-  piggybank: PiggyBank,
-  cart: ShoppingCart,
-  ticket: Ticket,
-  toolcase: ToolCase,
-  utensils: Utensils,
-  pawprint: PawPrint,
-  home: Home,
-  gift: Gift,
-  dumbbell: Dumbbell,
-  book: BookOpen,
-  baggageclaim: BaggageClaim,
-  mailbox: Mailbox,
-  receipttext: ReceiptText,
-};
-
-const COLOR_MAP: Record<string, { iconBg: string; iconColor: string; badgeBg: string; badgeText: string }> = {
-  green:  { iconBg: "bg-green-100/10",   iconColor: "text-green-500",   badgeBg: "bg-green-100/10",   badgeText: "text-green-600"  },
-  blue:   { iconBg: "bg-blue-100/10",    iconColor: "text-blue-500",    badgeBg: "bg-blue-100/10",    badgeText: "text-blue-600"   },
-  purple: { iconBg: "bg-purple-100/10",  iconColor: "text-purple-500",  badgeBg: "bg-purple-100/10",  badgeText: "text-purple-600" },
-  pink:   { iconBg: "bg-pink-100/10",    iconColor: "text-pink-500",    badgeBg: "bg-pink-100/10",    badgeText: "text-pink-600"   },
-  red:    { iconBg: "bg-red-100/10",     iconColor: "text-red-500",     badgeBg: "bg-red-100/10",     badgeText: "text-red-600"    },
-  orange: { iconBg: "bg-orange-100/10",  iconColor: "text-orange-500",  badgeBg: "bg-orange-100/10",  badgeText: "text-orange-600" },
-  amber:  { iconBg: "bg-amber-100/10",   iconColor: "text-amber-500",   badgeBg: "bg-amber-100/10",   badgeText: "text-amber-600"  },
-};
-
-const DEFAULT_ICON = Tag;
-const DEFAULT_COLOR = COLOR_MAP.blue;
 
 interface Category {
   id: string;
@@ -157,7 +105,7 @@ export function Categories() {
           )}
           {categories.map((category) => {
             const icon = ICON_MAP[category.icon ?? ""] ?? DEFAULT_ICON;
-            const colors = COLOR_MAP[category.color ?? ""] ?? DEFAULT_COLOR;
+            const colors = COLOR_MAP[category.color ?? ""] ?? DEFAULT_COLORS;
             return (
               <CategoryCard
                 key={category.id}

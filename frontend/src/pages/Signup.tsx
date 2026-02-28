@@ -6,7 +6,7 @@ import { Eye, EyeClosed, Lock, LogIn, Mail, User } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import logo from '../assets/imgs/logo.svg'
+import { Logo } from '../assets/imgs/Logo'
 import { useAuthStore } from '../stores/auth'
 
 export function Signup() {
@@ -40,7 +40,7 @@ export function Signup() {
     return (
         <div className="flex flex-col min-h-screen items-center justify-center gap-8 px-4 sm:px-0">
             <div>
-                <img src={logo} alt="Logo" />
+                <Logo className="h-8 text-emerald-700 dark:text-emerald-400" />
             </div>
             <Card className="w-full max-w-md px-8 pt-8 shadow-md">
                 <CardHeader className="items-center text-center">
