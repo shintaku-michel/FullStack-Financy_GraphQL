@@ -3,6 +3,7 @@ import { Layout } from './components/Layout'
 import { Categories } from './pages/Categories/index'
 import { Dashboard } from './pages/Dashboard/index'
 import { Login } from './pages/Login'
+import { Profile } from './pages/Profile/index'
 import { Signup } from './pages/Signup'
 import { Transactions } from './pages/Transactions/index'
 import { useAuthStore } from './stores/auth'
@@ -47,6 +48,11 @@ function App() {
         <Route path="/transactions" element={
           <ProtectedRouter>
             <Transactions />
+          </ProtectedRouter>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRouter>
+            <Profile />
           </ProtectedRouter>
         } />
       </Routes>

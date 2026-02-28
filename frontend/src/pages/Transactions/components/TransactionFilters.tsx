@@ -61,7 +61,7 @@ export function TransactionFilters({
           open ? "max-h-125 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-      <div className="rounded-xl bg-white p-6 border">
+      <div className="rounded-xl bg-white dark:bg-gray-900 p-6 border dark:border-gray-700">
         <div className="flex flex-col lg:flex-row items-end gap-4">
           <div className="flex-1 w-full">
             <Label htmlFor="search" className="text-xs text-muted-foreground">Buscar</Label>

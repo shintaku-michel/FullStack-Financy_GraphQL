@@ -28,7 +28,7 @@ export function CategoryCard({
   onEdit,
 }: CategoryCardProps) {
   return (
-    <div className="rounded-xl bg-white p-5 shadow-sm flex flex-col gap-4">
+    <div className="rounded-xl bg-white dark:bg-gray-900 p-5 shadow-sm flex flex-col gap-4">
       <div className="flex items-start justify-between">
         <div className={cn("p-2 rounded-lg", iconBgColor)}>
           <Icon size={20} className={iconColor} />
@@ -38,7 +38,7 @@ export function CategoryCard({
             variant="outline"
             size="icon-sm"
             onClick={onDelete}
-            className="text-red-400 hover:text-red-600 hover:bg-red-50 border-gray-200"
+            className="text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 border-gray-200 dark:border-gray-700"
           >
             <Trash2 size={14} />
           </Button>
@@ -46,7 +46,7 @@ export function CategoryCard({
             variant="outline"
             size="icon-sm"
             onClick={onEdit}
-            className="text-gray-400 hover:text-gray-600 border-gray-200"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 border-gray-200 dark:border-gray-700"
           >
             <Pencil size={14} />
           </Button>
@@ -54,8 +54,8 @@ export function CategoryCard({
       </div>
 
       <div>
-        <h3 className="font-semibold text-gray-800">{name}</h3>
-        <p className="text-sm text-gray-500 mt-1">{description}</p>
+        <h3 className="font-semibold text-gray-800 dark:text-gray-100">{name}</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
       </div>
 
       <div className="flex items-center justify-between mt-auto">
@@ -68,7 +68,7 @@ export function CategoryCard({
         >
           {name}
         </span>
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-gray-500 dark:text-gray-400">
           {itemCount} {itemCount === 1 ? "item" : "itens"}
         </span>
       </div>

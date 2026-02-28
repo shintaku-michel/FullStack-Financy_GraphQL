@@ -27,6 +27,7 @@ interface AuthState {
     refreshAccessToken: () => Promise<boolean>;
     logout: () => Promise<void>;
     logoutLocal: () => void;
+    updateUserProfile: (user: User) => void;
 }
 
 function setAuthState(set: (state: Partial<AuthState>) => void, data: AuthMutationData) {
@@ -35,6 +36,7 @@ function setAuthState(set: (state: Partial<AuthState>) => void, data: AuthMutati
             id: data.user.id,
             email: data.user.email,
             name: data.user.name,
+            avatarUrl: data.user.avatarUrl,
             createdAt: data.user.createdAt,
             updatedAt: data.user.updatedAt,
         },
@@ -115,6 +117,8 @@ export const useAuthStore = create<AuthState>()(
                 set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
                 apolloClient.clearStore();
             },
+
+            updateUserProfile: (updatedUser: User) => set({ user: updatedUser }),
         }),
         {
             name: "auth-storage",

@@ -55,6 +55,7 @@ type Mutation {
   refreshToken(data: RefreshTokenInput!): RefreshTokenOutput!
   register(data: RegisterInput!): RegisterOutput!
   updateCategory(data: CategoryInput!, id: ID!): CategoryModel!
+  updateProfile(data: UpdateProfileInput!): UserModel!
   updateTransaction(data: TransactionInput!, id: ID!): TransactionModel!
 }
 
@@ -112,12 +113,18 @@ enum TransactionType {
   INCOME
 }
 
+input UpdateProfileInput {
+  avatarUrl: String
+  name: String!
+}
+
 input UserInput {
   email: String!
   name: String!
 }
 
 type UserModel {
+  avatarUrl: String
   createdAt: DateTimeISO!
   email: String!
   id: ID!

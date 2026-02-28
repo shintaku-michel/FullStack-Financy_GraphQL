@@ -1,5 +1,5 @@
 import { prismaClient } from "../../prisma/prisma";
-import { UserInput } from "../dtos/input/user.input";
+import { UpdateProfileInput, UserInput } from "../dtos/input/user.input";
 import { AppError } from "../utils/errors";
 
 export class UserService {
@@ -21,5 +21,17 @@ export class UserService {
 
     async listUsers() {
         return prismaClient.user.findMany();
+    }
+
+    async updateProfile(userId: string, data: UpdateProfileInput) {
+        const user = await prismaClient.user.findUnique({ where: { id: userId } });
+        if (!user) throw AppError.notFound("Usuário não encontrado.");
+        return prismaClient.user.update({
+            where: { id: userId },
+            data: {
+                name: data.name,
+                ...(data.avatarUrl !== undefined && { avatarUrl: data.avatarUrl }),
+            },
+        });
     }
 }

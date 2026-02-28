@@ -90,27 +90,27 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
   const visibleTransactions = transactions.slice(startIndex, startIndex + qtdItensTable);
 
   return (
-    <div className="rounded-xl bg-white shadow-sm overflow-hidden">
+    <div className="rounded-xl bg-white dark:bg-gray-900 shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-gray-100">
-            <th className="text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-6 py-4">
+          <tr className="border-b border-gray-100 dark:border-gray-800">
+            <th className="text-left text-xs font-normal text-gray-400 dark:text-gray-500 uppercase tracking-wide px-6 py-4">
               Descrição
             </th>
-            <th className="hidden sm:table-cell text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden sm:table-cell text-left text-xs font-normal text-gray-400 dark:text-gray-500 uppercase tracking-wide px-4 py-4">
               Data
             </th>
-            <th className="hidden md:table-cell text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden md:table-cell text-left text-xs font-normal text-gray-400 dark:text-gray-500 uppercase tracking-wide px-4 py-4">
               Categoria
             </th>
-            <th className="hidden sm:table-cell text-left text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden sm:table-cell text-left text-xs font-normal text-gray-400 dark:text-gray-500 uppercase tracking-wide px-4 py-4">
               Tipo
             </th>
-            <th className="hidden sm:table-cell text-right text-xs font-normal text-gray-400 uppercase tracking-wide px-4 py-4">
+            <th className="hidden sm:table-cell text-right text-xs font-normal text-gray-400 dark:text-gray-500 uppercase tracking-wide px-4 py-4">
               Valor
             </th>
-            <th className="hidden sm:table-cell text-right text-xs font-normal text-gray-400 uppercase tracking-wide px-6 py-4">
+            <th className="hidden sm:table-cell text-right text-xs font-normal text-gray-400 dark:text-gray-500 uppercase tracking-wide px-6 py-4">
               Ações
             </th>
           </tr>
@@ -118,7 +118,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
         <tbody>
           {loading && (
             <tr>
-              <td colSpan={6} className="text-center text-sm text-gray-400 py-8">
+              <td colSpan={6} className="text-center text-sm text-gray-400 dark:text-gray-500 py-8">
                 Carregando...
               </td>
             </tr>
@@ -135,8 +135,8 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
               <tr
                 key={tx.id}
                 className={cn(
-                  "hover:bg-gray-50 transition-colors",
-                  index < visibleTransactions.length - 1 && "border-b border-gray-100"
+                  "hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors",
+                  index < visibleTransactions.length - 1 && "border-b border-gray-100 dark:border-gray-800"
                 )}
               >
                 <td className="px-6 py-4">
@@ -145,15 +145,15 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                       <Icon size={16} className={colors.iconColor} />
                     </div>
                     <div className="min-w-0">
-                      <span className="font-medium text-gray-800 text-sm block truncate">{tx.description}</span>
-                      <div className="sm:hidden flex items-center gap-2 text-xs text-gray-400">
+                      <span className="font-medium text-gray-800 dark:text-gray-100 text-sm block truncate">{tx.description}</span>
+                      <div className="sm:hidden flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
                         <span>{formattedDate}</span>
                         <span className={tx.type === "INCOME" ? "text-green-600" : "text-red-600"}>
                           {tx.type === "INCOME" ? "+" : "-"} R${" "}
                           {tx.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                         </span>
                       </div>
-                      <span className={"sm:hidden text-xs rounded-full font-normal text-gray-400"}>{tx.category.name}</span>
+                      <span className={"sm:hidden text-xs rounded-full font-normal text-gray-400 dark:text-gray-500"}>{tx.category.name}</span>
                     </div>
                   </div>
                   <div className="sm:hidden flex items-center gap-2 mt-2 pl-11">
@@ -161,7 +161,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                       variant="outline"
                       size="icon-sm"
                       onClick={() => onDelete?.(tx.id)}
-                      className="text-red-400 hover:text-red-600 hover:bg-red-50 border-gray-200"
+                      className="text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 border-gray-200 dark:border-gray-700"
                     >
                       <Trash2 size={14} />
                     </Button>
@@ -169,14 +169,14 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                       variant="outline"
                       size="icon-sm"
                       onClick={() => onEdit?.(tx)}
-                      className="text-gray-400 hover:text-gray-600 border-gray-200"
+                      className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 border-gray-200 dark:border-gray-700"
                     >
                       <SquarePen size={14} />
                     </Button>
                   </div>
                 </td>
 
-                <td className="hidden sm:table-cell px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{formattedDate}</td>
+                <td className="hidden sm:table-cell px-4 py-4 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{formattedDate}</td>
 
                 <td className="hidden md:table-cell px-4 py-4">
                   <span
@@ -217,7 +217,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                       variant="outline"
                       size="icon-sm"
                       onClick={() => onDelete?.(tx.id)}
-                      className="text-red-400 hover:text-red-600 hover:bg-red-50 border-gray-200"
+                      className="text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 border-gray-200 dark:border-gray-700"
                     >
                       <Trash2 size={14} />
                     </Button>
@@ -225,7 +225,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
                       variant="outline"
                       size="icon-sm"
                       onClick={() => onEdit?.(tx)}
-                      className="text-gray-400 hover:text-gray-600 border-gray-200"
+                      className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 border-gray-200 dark:border-gray-700"
                     >
                       <SquarePen size={14} />
                     </Button>
@@ -236,7 +236,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
           })}
           {!loading && transactions.length === 0 && (
             <tr>
-              <td colSpan={6} className="text-center text-sm text-gray-400 py-8">
+              <td colSpan={6} className="text-center text-sm text-gray-400 dark:text-gray-500 py-8">
                 Nenhuma transação encontrada.
               </td>
             </tr>
@@ -245,8 +245,8 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
       </table>
       </div>
 
-      <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
-        <span className="text-sm text-gray-500">
+      <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+        <span className="text-sm text-gray-500 dark:text-gray-400">
           {transactions.length === 0
             ? "0 resultados"
             : `${startIndex + 1} a ${Math.min(startIndex + qtdItensTable, transactions.length)} | ${transactions.length} resultados`}
@@ -255,7 +255,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
           <Button
             variant="outline"
             size="icon-sm"
-            className="border-gray-200 text-gray-400"
+            className="border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => p - 1)}
           >
@@ -270,7 +270,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
               className={
                 currentPage === page
                   ? "text-white hover:bg-[#124B2B] border-0"
-                  : "border-gray-200 text-gray-500"
+                  : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400"
               }
               onClick={() => setCurrentPage(page)}
             >
@@ -281,7 +281,7 @@ export function TransactionTable({ transactions, loading, onDelete, onEdit }: Tr
           <Button
             variant="outline"
             size="icon-sm"
-            className="border-gray-200 text-gray-400"
+            className="border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500"
             disabled={currentPage === totalPages || totalPages === 0}
             onClick={() => setCurrentPage((p) => p + 1)}
           >

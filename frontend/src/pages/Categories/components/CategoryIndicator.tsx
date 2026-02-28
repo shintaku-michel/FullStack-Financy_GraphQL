@@ -14,12 +14,12 @@ export function CategoryIndicator({
   label,
 }: CategoryIndicatorProps) {
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm">
+    <div className="rounded-xl bg-white dark:bg-gray-900 p-6 shadow-sm">
       <div className="flex items-start gap-4">
         <Icon size={22} className={`${iconColor} mt-1`} />
         <div className="flex flex-col items-start">
-          <p className="text-xl font-semibold text-gray-800">{value}</p>
-          <p className="text-xs text-gray-500 uppercase">{label}</p>
+          <p className="text-xl font-semibold text-gray-800 dark:text-gray-100">{value}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">{label}</p>
         </div>
       </div>
     </div>

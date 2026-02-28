@@ -122,7 +122,7 @@ export function Categories() {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-2">
           <div>
             <Label className="text-xl text-semibold">Categorias</Label>
-            <p className="text-sm text-gray-500">Organize suas transações por categorias</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Organize suas transações por categorias</p>
           </div>
           <Button type="button" className="text-xs w-full lg:w-auto" onClick={() => setOpenDialog(true)}>
             <Plus className="mr-2 h-4 w-4" />
@@ -153,7 +153,7 @@ export function Categories() {
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
           {loading && (
-            <p className="col-span-4 text-center text-sm text-gray-400">Carregando...</p>
+            <p className="col-span-4 text-center text-sm text-gray-400 dark:text-gray-500">Carregando...</p>
           )}
           {categories.map((category) => {
             const icon = ICON_MAP[category.icon ?? ""] ?? DEFAULT_ICON;

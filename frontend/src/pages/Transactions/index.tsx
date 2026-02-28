@@ -75,7 +75,7 @@ export function Transactions() {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-2">
           <div>
             <Label className="text-xl text-semibold">Transações</Label>
-            <p className="text-sm text-gray-500">Gerencie todas as suas transações financeiras</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Gerencie todas as suas transações financeiras</p>
           </div>
           <Button type="button" className="text-xs w-full lg:w-auto" onClick={() => setOpenDialog(true)}>
             <Plus className="mr-2 h-4 w-4" />

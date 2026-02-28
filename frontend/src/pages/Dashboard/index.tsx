@@ -58,7 +58,7 @@ export function Dashboard() {
             iconColor="text-purple-500"
             label="Saldo total"
             value={formatCurrency(totalBalance)}
-            valueColor={totalBalance >= 0 ? "text-gray-800" : "text-red-600"}
+            valueColor={totalBalance >= 0 ? "text-gray-800 dark:text-gray-100" : "text-red-600"}
           />
           <DashboardSummaryCard
             icon={CircleArrowUp}

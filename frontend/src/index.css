@@ -117,7 +117,7 @@
 html,
 body {
   border-radius: 0 !important;
-  @apply bg-gray-100;
+  @apply bg-gray-100 dark:bg-gray-950;
 }
 
 @layer base {
