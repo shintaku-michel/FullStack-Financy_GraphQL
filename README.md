@@ -50,5 +50,5 @@ npm run dev
 
 ### Atualizações
 - [x] Implementação RefreshToken
-- [ ] Troca de imagem do usuário
-- [ ] DarkMode
+- [x] Troca de imagem do usuário
+- [x] DarkMode

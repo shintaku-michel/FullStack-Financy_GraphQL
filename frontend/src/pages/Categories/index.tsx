@@ -52,13 +52,13 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 const COLOR_MAP: Record<string, { iconBg: string; iconColor: string; badgeBg: string; badgeText: string }> = {
-  green:  { iconBg: "bg-green-100",   iconColor: "text-green-500",   badgeBg: "bg-green-100",   badgeText: "text-green-600"  },
-  blue:   { iconBg: "bg-blue-100",    iconColor: "text-blue-500",    badgeBg: "bg-blue-100",    badgeText: "text-blue-600"   },
-  purple: { iconBg: "bg-purple-100",  iconColor: "text-purple-500",  badgeBg: "bg-purple-100",  badgeText: "text-purple-600" },
-  pink:   { iconBg: "bg-pink-100",    iconColor: "text-pink-500",    badgeBg: "bg-pink-100",    badgeText: "text-pink-600"   },
-  red:    { iconBg: "bg-red-100",     iconColor: "text-red-500",     badgeBg: "bg-red-100",     badgeText: "text-red-600"    },
-  orange: { iconBg: "bg-orange-100",  iconColor: "text-orange-500",  badgeBg: "bg-orange-100",  badgeText: "text-orange-600" },
-  amber:  { iconBg: "bg-amber-100",   iconColor: "text-amber-500",   badgeBg: "bg-amber-100",   badgeText: "text-amber-600"  },
+  green:  { iconBg: "bg-green-100/10",   iconColor: "text-green-500",   badgeBg: "bg-green-100/10",   badgeText: "text-green-600"  },
+  blue:   { iconBg: "bg-blue-100/10",    iconColor: "text-blue-500",    badgeBg: "bg-blue-100/10",    badgeText: "text-blue-600"   },
+  purple: { iconBg: "bg-purple-100/10",  iconColor: "text-purple-500",  badgeBg: "bg-purple-100/10",  badgeText: "text-purple-600" },
+  pink:   { iconBg: "bg-pink-100/10",    iconColor: "text-pink-500",    badgeBg: "bg-pink-100/10",    badgeText: "text-pink-600"   },
+  red:    { iconBg: "bg-red-100/10",     iconColor: "text-red-500",     badgeBg: "bg-red-100/10",     badgeText: "text-red-600"    },
+  orange: { iconBg: "bg-orange-100/10",  iconColor: "text-orange-500",  badgeBg: "bg-orange-100/10",  badgeText: "text-orange-600" },
+  amber:  { iconBg: "bg-amber-100/10",   iconColor: "text-amber-500",   badgeBg: "bg-amber-100/10",   badgeText: "text-amber-600"  },
 };
 
 const DEFAULT_ICON = Tag;
